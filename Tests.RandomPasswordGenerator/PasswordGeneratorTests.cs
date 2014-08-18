@@ -235,6 +235,68 @@ namespace Tests.PasswordGeneratorTesting
         }
 
         [Test]
+        public void GenerateStandardPasswordPhraseValid()
+        {
+            // Arrange
+            const int expected = 4;
+
+            // Act
+            var testPasswordPhrase = PasswordGenerator.GenerateStandardPasswordPhrase();
+            var words = testPasswordPhrase.Split(' ');
+            var actual = words.Count();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GeneratePasswordPhraseWithSpecialCharacterSeparatorValid()
+        {
+            // Arrange
+            const int expected = 4;
+            const string specialCharacter = "^";
+
+            // Act
+            var testPasswordPhrase =
+                PasswordGenerator.GeneratePasswordPhraseWithSpecialCharacterSeparator(specialCharacter);
+            var words = testPasswordPhrase.Split('^');
+            var actual = words.Count();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GeneratePasswordPhraseWithSpecialCharacterSeparatorSpace()
+        {
+            // Arrange
+            const int expected = 4;
+            const string specialCharacter = " ";
+
+            // Act
+            var testPasswordPhrase =
+                PasswordGenerator.GeneratePasswordPhraseWithSpecialCharacterSeparator(specialCharacter);
+            var words = testPasswordPhrase.Split(' ');
+            var actual = words.Count();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GeneratePasswordPhraseWithRandomSpecialCharacterSeparatorValid()
+        {
+            // Arrange
+            const int expected = 4;
+
+            // Act
+            var testPasswordPhrase = PasswordGenerator.GeneratePasswordPhraseWithRandomSpecialCharacterSeparator();
+            
+            // Assert
+            Assert.IsNotNullOrEmpty(testPasswordPhrase);
+        }
+
+        [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void GeneratePasswordWithZeroAlphabeticalCausesArgumentOutOfRangeException()
         {
@@ -324,6 +386,21 @@ namespace Tests.PasswordGeneratorTesting
             // Act
             var testPassword = PasswordGenerator.GenerateXNumberOfPasswords(numberOfPasswords, numberOfAlphabetical, numberOfNumberical, numberOfSpecialCharacters);
 
+            // Assert is Exception
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GeneratePasswordPhraseWithSpecialCharacterSeparatorInvalidSeparatorThrowsException()
+        {
+            // Arrange
+            const string specialCharacter = "|";
+
+            // Act
+            var testPasswordPhrase =
+                PasswordGenerator.GeneratePasswordPhraseWithSpecialCharacterSeparator(specialCharacter);
+
+            // Assert
             // Assert is Exception
         }
 

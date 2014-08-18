@@ -7,7 +7,7 @@ namespace RandomPasswordGenerator
     {
         private const string Alphabetical = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private const string Numerical = "0123456789";
-        private const string Special = "@%+!#$^?:.(){}[]~-_`";
+        private const string Special = "@%+!#$^? :.(){}[]~-_`";
         private const int IndicatesAlphabetical = 0;
         private const int IndicatesNumberical = 1;
         private const int IndicatesSpecial = 2;
@@ -87,7 +87,45 @@ namespace RandomPasswordGenerator
             }
 
             return passwordList;
-        } 
+        }
+
+        public static string GenerateStandardPasswordPhrase()
+        {
+            var firstNoun = Words.Nouns[random.Next(0, Words.Nouns.Count)];
+            var secondNoun = Words.Nouns[random.Next(0, Words.Nouns.Count)];
+            var adjective = Words.Adjectives[random.Next(0, Words.Adjectives.Count)];
+            var verb = Words.Verbs[random.Next(0, Words.Verbs.Count)];
+            var specialCharacter = " ";
+            return CreatePhrase(firstNoun, secondNoun, adjective, verb, specialCharacter);
+        }
+
+        public static string GeneratePasswordPhraseWithSpecialCharacterSeparator(string separator)
+        {
+            IsSeparatorValid(separator);
+            var firstNoun = Words.Nouns[random.Next(0, Words.Nouns.Count)];
+            var secondNoun = Words.Nouns[random.Next(0, Words.Nouns.Count)];
+            var adjective = Words.Adjectives[random.Next(0, Words.Adjectives.Count)];
+            var verb = Words.Verbs[random.Next(0, Words.Verbs.Count)];
+            var specialCharacter = separator;
+            return CreatePhrase(firstNoun, secondNoun, adjective, verb, specialCharacter);
+        }
+
+
+
+        public static string GeneratePasswordPhraseWithRandomSpecialCharacterSeparator()
+        {
+            var firstNoun = Words.Nouns[random.Next(0, Words.Nouns.Count)];
+            var secondNoun = Words.Nouns[random.Next(0, Words.Nouns.Count)];
+            var adjective = Words.Adjectives[random.Next(0, Words.Adjectives.Count)];
+            var verb = Words.Verbs[random.Next(0, Words.Verbs.Count)];
+            var specialCharacter = SelectRandomCharacterFromCollection(Special);
+            return CreatePhrase(firstNoun, secondNoun, adjective, verb, specialCharacter);
+        }
+
+        private static string CreatePhrase(string firstNoun, string secondNoun, string adjective, string verb, string specialCharacter)
+        {
+            return firstNoun + specialCharacter + verb + specialCharacter + adjective + specialCharacter + secondNoun;
+        }
 
         private static string SelectRandomCharacterFromCollection(string collection)
         {
@@ -100,5 +138,11 @@ namespace RandomPasswordGenerator
             if (numberOfNumerical < 0) throw new ArgumentOutOfRangeException("numberOfNumerical", "Must be 0 or a positive number.");
             if (numberOfSpecialCharacters < 0) throw new ArgumentOutOfRangeException("numberOfSpecialCharacters", "Must be 0 or a positive number.");
         }
+
+        private static void IsSeparatorValid(string separator)
+        {
+            if (!Special.Contains(separator)) throw new ArgumentException("Separator", "Allowed values :   " + Special + "   : Supplied separator not allowed.");
+        }
+
     }
 }
