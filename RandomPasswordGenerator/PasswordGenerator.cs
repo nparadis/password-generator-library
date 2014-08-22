@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RandomPasswordGenerator
 {
@@ -8,6 +9,7 @@ namespace RandomPasswordGenerator
         private const string Alphabetical = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private const string Numerical = "0123456789";
         private const string Special = "@%+!#$^? :.(){}[]~-_`";
+        private const string BlankSpace = " ";
         private const int IndicatesAlphabetical = 0;
         private const int IndicatesNumberical = 1;
         private const int IndicatesSpecial = 2;
@@ -96,8 +98,34 @@ namespace RandomPasswordGenerator
             var secondNoun = Words.Nouns[random.Next(0, Words.Nouns.Count)];
             var adjective = Words.Adjectives[random.Next(0, Words.Adjectives.Count)];
             var verb = Words.Verbs[random.Next(0, Words.Verbs.Count)];
-            var specialCharacter = " ";
-            return CreatePhrase(firstNoun, secondNoun, adjective, verb, specialCharacter);
+            return CreatePhrase(firstNoun, secondNoun, adjective, verb, BlankSpace);
+        }
+
+        public static string GenerateStandardPasswordPhraseWithThreeLetterWords()
+        {
+            var firstNoun = GetWordOfSpecificLength(Words.Nouns, 3);  
+            var secondNoun = GetWordOfSpecificLength(Words.Nouns, 3);   
+            var adjective = GetWordOfSpecificLength(Words.Adjectives, 3);   
+            var verb = GetWordOfSpecificLength(Words.Verbs, 3);   
+            return CreatePhrase(firstNoun, secondNoun, adjective, verb, BlankSpace);
+        }
+
+        public static string GenerateStandardPasswordPhraseWithFourLetterWords()
+        {
+            var firstNoun = GetWordOfSpecificLength(Words.Nouns, 4);
+            var secondNoun = GetWordOfSpecificLength(Words.Nouns, 4);
+            var adjective = GetWordOfSpecificLength(Words.Adjectives, 4);
+            var verb = GetWordOfSpecificLength(Words.Verbs, 4);
+            return CreatePhrase(firstNoun, secondNoun, adjective, verb, BlankSpace);
+        }
+
+        public static string GenerateStandardPasswordPhraseWithFiveLetterWords()
+        {
+            var firstNoun = GetWordOfSpecificLength(Words.Nouns, 5);
+            var secondNoun = GetWordOfSpecificLength(Words.Nouns, 5);
+            var adjective = GetWordOfSpecificLength(Words.Adjectives, 5);
+            var verb = GetWordOfSpecificLength(Words.Verbs, 5);
+            return CreatePhrase(firstNoun, secondNoun, adjective, verb, BlankSpace);
         }
 
         public static string GeneratePasswordPhraseWithSpecialCharacterSeparator(string separator)
@@ -121,14 +149,32 @@ namespace RandomPasswordGenerator
             return CreatePhrase(firstNoun, secondNoun, adjective, verb, specialCharacter);
         }
 
-        public static ICollection<string> GenerateXNumberOfStandardPasswordPhrases(int numberOfPasswordPhrasesRequested)
+        public static ICollection<string> GenerateXNumberOfStandardPasswordPhrases(int numberOfPasswordPhrasesRequested, SizeOfWords wordSize)
         {
             IsAmountPositive(numberOfPasswordPhrasesRequested, "numberOfPasswordPhrasesRequested");
             var passwordPhraseList = new List<string>();
 
             for (int i = 0; i < numberOfPasswordPhrasesRequested; i++)
             {
-                passwordPhraseList.Add(GenerateStandardPasswordPhrase());
+                switch (wordSize)
+                {
+                    case SizeOfWords.Random :
+                        passwordPhraseList.Add(GenerateStandardPasswordPhrase());
+                        break;
+                    case SizeOfWords.ThreeLetter:
+                        passwordPhraseList.Add(GenerateStandardPasswordPhraseWithThreeLetterWords());
+                        break;
+                    case SizeOfWords.FourLetter:
+                        passwordPhraseList.Add(GenerateStandardPasswordPhraseWithFourLetterWords());
+                        break;
+                    case SizeOfWords.FiveLetter:
+                        passwordPhraseList.Add(GenerateStandardPasswordPhraseWithFiveLetterWords());
+                        break;
+                    default:
+                        passwordPhraseList.Add(GenerateStandardPasswordPhrase());
+                        break;
+                }
+                
             }
 
             return passwordPhraseList;
@@ -142,6 +188,11 @@ namespace RandomPasswordGenerator
         private static string SelectRandomCharacterFromCollection(string collection)
         {
             return collection.Substring(random.Next(0, collection.Length), 1);
+        }
+
+        private static string GetWordOfSpecificLength(ICollection<string> wordCollection, int wordLength)
+        {
+            return wordCollection.Where(x => x.Length == wordLength).ToList()[random.Next(0, wordCollection.Where(x => x.Length == wordLength).ToList().Count)];
         }
 
         private static void IsInputValid(int numberOfAlphabetical, int numberOfNumerical, int numberOfSpecialCharacters)
@@ -161,5 +212,13 @@ namespace RandomPasswordGenerator
             if (!Special.Contains(separator)) throw new ArgumentException("Separator", "Allowed values :   " + Special + "   : Supplied separator not allowed.");
         }
 
+    }
+
+    public enum SizeOfWords
+    {
+        Random,
+        ThreeLetter,
+        FourLetter,
+        FiveLetter
     }
 }

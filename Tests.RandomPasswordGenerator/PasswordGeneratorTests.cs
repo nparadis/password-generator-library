@@ -297,6 +297,20 @@ namespace Tests.PasswordGeneratorTesting
         }
 
         [Test]
+        public void GenerateXNumberOfPasswordPhrasesReturnsAListOfTheRightAmountOfPasswordPhrasesValid()
+        {
+            // Arrange
+            const int expected = 25;
+
+            // Act
+            var testPasswordPhrases = PasswordGenerator.GenerateXNumberOfStandardPasswordPhrases(25);
+            var actual = testPasswordPhrases.Count();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void GeneratePasswordWithZeroAlphabeticalCausesArgumentOutOfRangeException()
         {
