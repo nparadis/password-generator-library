@@ -78,7 +78,8 @@ namespace RandomPasswordGenerator
         public static ICollection<String> GenerateXNumberOfPasswords(int numberOfPasswords,
             int numberOfAlphabetical, int numberOfNumerical, int numberOfSpecialCharacters)
         {
-            if (numberOfPasswords <= 0) throw new ArgumentOutOfRangeException("numberOfPasswords", "You must be request at least 1 password.");
+            IsAmountPositive(numberOfPasswords, "numberOfPasswords");
+
             var passwordList = new List<string>();
 
             for (int i = 0; i < numberOfPasswords; i++)
@@ -110,8 +111,6 @@ namespace RandomPasswordGenerator
             return CreatePhrase(firstNoun, secondNoun, adjective, verb, specialCharacter);
         }
 
-
-
         public static string GeneratePasswordPhraseWithRandomSpecialCharacterSeparator()
         {
             var firstNoun = Words.Nouns[random.Next(0, Words.Nouns.Count)];
@@ -120,6 +119,19 @@ namespace RandomPasswordGenerator
             var verb = Words.Verbs[random.Next(0, Words.Verbs.Count)];
             var specialCharacter = SelectRandomCharacterFromCollection(Special);
             return CreatePhrase(firstNoun, secondNoun, adjective, verb, specialCharacter);
+        }
+
+        public static ICollection<string> GenerateXNumberOfStandardPasswordPhrases(int numberOfPasswordPhrasesRequested)
+        {
+            IsAmountPositive(numberOfPasswordPhrasesRequested, "numberOfPasswordPhrasesRequested");
+            var passwordPhraseList = new List<string>();
+
+            for (int i = 0; i < numberOfPasswordPhrasesRequested; i++)
+            {
+                passwordPhraseList.Add(GenerateStandardPasswordPhrase());
+            }
+
+            return passwordPhraseList;
         }
 
         private static string CreatePhrase(string firstNoun, string secondNoun, string adjective, string verb, string specialCharacter)
@@ -137,6 +149,11 @@ namespace RandomPasswordGenerator
             if (numberOfAlphabetical < 1) throw new ArgumentOutOfRangeException("numberOfAlphabetical", "Must be greater than zero.");
             if (numberOfNumerical < 0) throw new ArgumentOutOfRangeException("numberOfNumerical", "Must be 0 or a positive number.");
             if (numberOfSpecialCharacters < 0) throw new ArgumentOutOfRangeException("numberOfSpecialCharacters", "Must be 0 or a positive number.");
+        }
+
+        private static void IsAmountPositive(int amountRequested, string parameterName)
+        {
+            if (amountRequested <= 0) throw new ArgumentOutOfRangeException(parameterName, "You must be request at least 1 or more!");
         }
 
         private static void IsSeparatorValid(string separator)
