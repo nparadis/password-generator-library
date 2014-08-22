@@ -21,3 +21,17 @@ Methods :
     public static string GenerateStandardTwelveCharacterPassword()
 
     public static ICollection<string> GenerateXNumberOfPasswords(int numberOfPasswords, int numberOfAlphabetical, int numberOfNumerical, int numberOfSpecialCharacters)
+
+    public static string GenerateStandardPasswordPhrase()
+
+    public static string GenerateStandardPasswordPhraseWithThreeLetterWords()
+
+    public static string GenerateStandardPasswordPhraseWithFourLetterWords()
+
+    public static string GenerateStandardPasswordPhraseWithFiveLetterWords()
+
+    public static string GeneratePasswordPhraseWithSpecialCharacterSeparator(string separator)
+
+    public static string GeneratePasswordPhraseWithRandomSpecialCharacterSeparator()
+
+    public static ICollection<string> GenerateXNumberOfStandardPasswordPhrases(int numberOfPasswordPhrasesRequested, SizeOfWords wordSize)
