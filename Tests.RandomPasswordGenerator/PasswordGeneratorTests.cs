@@ -297,17 +297,149 @@ namespace Tests.PasswordGeneratorTesting
         }
 
         [Test]
-        public void GenerateXNumberOfPasswordPhrasesReturnsAListOfTheRightAmountOfPasswordPhrasesValid()
+        public void GeneratePasswordPhraseWithThreeLetterWordsReturnsAThreeLetterWordPasswordPhraseValid()
+        {
+            // Arrange
+            const bool expectedAllThreeLetterWords = true;
+
+            // Act
+            var actualWordsAreAllThreeLetterWords = true;
+            var testPasswordPhrase = PasswordGenerator.GenerateStandardPasswordPhraseWithThreeLetterWords();
+            var words = testPasswordPhrase.Split(' ');
+            foreach (var word in words)
+            {
+                if (word.Length != 3) actualWordsAreAllThreeLetterWords = false;
+            }
+
+            // Assert
+            Assert.AreEqual(expectedAllThreeLetterWords, actualWordsAreAllThreeLetterWords);
+        }
+
+        [Test]
+        public void GeneratePasswordPhraseWithFourLetterWordsReturnsAFourLetterWordPasswordPhraseValid()
+        {
+            // Arrange
+            const bool expectedAllFourLetterWords = true;
+
+            // Act
+            var actualWordsAreAllFourLetterWords = true;
+            var testPasswordPhrase = PasswordGenerator.GenerateStandardPasswordPhraseWithFourLetterWords();
+            var words = testPasswordPhrase.Split(' ');
+            foreach (var word in words)
+            {
+                if (word.Length != 4) actualWordsAreAllFourLetterWords = false;
+            }
+
+            // Assert
+            Assert.AreEqual(expectedAllFourLetterWords, actualWordsAreAllFourLetterWords);
+        }
+
+        [Test]
+        public void GeneratePasswordPhraseWithFiveLetterWordsReturnsAFiveLetterWordPasswordPhraseValid()
+        {
+            // Arrange
+            const bool expectedAllFiveLetterWords = true;
+
+            // Act
+            var actualWordsAreAllFiveLetterWords = true;
+            var testPasswordPhrase = PasswordGenerator.GenerateStandardPasswordPhraseWithFiveLetterWords();
+            var words = testPasswordPhrase.Split(' ');
+            foreach (var word in words)
+            {
+                if (word.Length != 5) actualWordsAreAllFiveLetterWords = false;
+            }
+
+            // Assert
+            Assert.AreEqual(expectedAllFiveLetterWords, actualWordsAreAllFiveLetterWords);
+        }
+
+        [Test]
+        public void GenerateXNumberOfPasswordPhrasesReturnsAListOfTheRightAmountOfRandomPasswordPhrasesValid()
         {
             // Arrange
             const int expected = 25;
 
             // Act
-            var testPasswordPhrases = PasswordGenerator.GenerateXNumberOfStandardPasswordPhrases(25);
+            var testPasswordPhrases = PasswordGenerator.GenerateXNumberOfStandardPasswordPhrases(25, SizeOfWords.Random);
             var actual = testPasswordPhrases.Count();
 
             // Assert
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GenerateXNumberOfPasswordPhrasesReturnsAListOfTheRightAmountOfThreeLetterPasswordPhrasesValid()
+        {
+            // Arrange
+            const int expected = 25;
+            const bool expectedAllThreeLetterWords = true;
+
+            // Act
+            var actualWordsAreAllThreeLetterWords = true;
+            var testPasswordPhrases = PasswordGenerator.GenerateXNumberOfStandardPasswordPhrases(25, SizeOfWords.ThreeLetter);
+            foreach (var phrase in testPasswordPhrases)
+            {
+                var words = phrase.Split(' ');
+                foreach (var word in words)
+                {
+                    if (word.Length != 3) actualWordsAreAllThreeLetterWords = false;
+                }
+            }
+            var actual = testPasswordPhrases.Count();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expectedAllThreeLetterWords, actualWordsAreAllThreeLetterWords);
+        }
+
+        [Test]
+        public void GenerateXNumberOfPasswordPhrasesReturnsAListOfTheRightAmountOfFourLetterPasswordPhrasesValid()
+        {
+            // Arrange
+            const int expected = 25;
+            const bool expectedAllFourLetterWords = true;
+
+            // Act
+            var actualWordsAreAllFourLetterWords = true;
+            var testPasswordPhrases = PasswordGenerator.GenerateXNumberOfStandardPasswordPhrases(25, SizeOfWords.FourLetter);
+            foreach (var phrase in testPasswordPhrases)
+            {
+                var words = phrase.Split(' ');
+                foreach (var word in words)
+                {
+                    if (word.Length != 4) actualWordsAreAllFourLetterWords = false;
+                }
+            }
+            var actual = testPasswordPhrases.Count();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expectedAllFourLetterWords, actualWordsAreAllFourLetterWords);
+        }
+
+        [Test]
+        public void GenerateXNumberOfPasswordPhrasesReturnsAListOfTheRightAmountOfFiveLetterPasswordPhrasesValid()
+        {
+            // Arrange
+            const int expected = 25;
+            const bool expectedAllFiveLetterWords = true;
+
+            // Act
+            var actualWordsAreAllFiveLetterWords = true;
+            var testPasswordPhrases = PasswordGenerator.GenerateXNumberOfStandardPasswordPhrases(25, SizeOfWords.FiveLetter);
+            foreach (var phrase in testPasswordPhrases)
+            {
+                var words = phrase.Split(' ');
+                foreach (var word in words)
+                {
+                    if (word.Length != 5) actualWordsAreAllFiveLetterWords = false;
+                }
+            }
+            var actual = testPasswordPhrases.Count();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expectedAllFiveLetterWords, actualWordsAreAllFiveLetterWords);
         }
 
         [Test]
@@ -415,6 +547,19 @@ namespace Tests.PasswordGeneratorTesting
                 PasswordGenerator.GeneratePasswordPhraseWithSpecialCharacterSeparator(specialCharacter);
 
             // Assert
+            // Assert is Exception
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void GenerateXNumberOfPasswordPhrasesWithNegativeQuantityThrowsArgumentOutOfRangeException()
+        {
+            // Arrange
+            const int numberOfPasswordPhrases = -10;
+
+            // Act
+            var testPassword = PasswordGenerator.GenerateXNumberOfStandardPasswordPhrases(numberOfPasswordPhrases, SizeOfWords.Random);
+
             // Assert is Exception
         }
 
