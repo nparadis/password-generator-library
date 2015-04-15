@@ -8,7 +8,7 @@ namespace RandomPasswordGenerator
     {
         private const string Alphabetical = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private const string Numerical = "0123456789";
-        private const string Special = "@%+!#$^? :.(){}[]~-_`";
+        private const string Special = "@%+!#$^?:.(){}[]~-_`";
         private const string BlankSpace = " ";
         private const int IndicatesAlphabetical = 0;
         private const int IndicatesNumberical = 1;

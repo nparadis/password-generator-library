@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using NUnit.Framework;
 using RandomPasswordGenerator;
 
-namespace Tests.RandomPasswordGenerator
+namespace Tests.PasswordGeneratorTesting
 {
     [TestFixture]
     public class PasswordGeneratorTests
